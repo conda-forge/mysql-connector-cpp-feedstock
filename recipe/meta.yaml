@@ -1,21 +1,21 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
-{% set version = "8.0.19" %}
-{% set build_number = '0' %}
+{% set version = "8.0.20" %}
+{% set build_number = 0 %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: "https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz"
-  sha256: 7c3bd74ce64a9300e7d481b76b388ad95017a52480c698b755579aec62d4a21e
+  url: https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz
+  sha256: 50eaebd1d59b5681b6959a8c5b95bdeeffd021db0f06264eb497706dbc5b39cb
   patches:
-   - 0001-Override-custom-install-layout.patch
-   - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
+    - 0001-Override-custom-install-layout.patch
+    - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
 
 build:
-  skip: True  # [win and vc<14]
+  skip: true  # [win and vc<14]
   number: {{ build_number }}
   missing_dso_whitelist:
     - /usr/lib/libresolv.9.dylib  # [osx]
@@ -53,7 +53,7 @@ about:
   license: LGPL
   license_family: LGPL
   license_file: LICENSE.txt
-  summary: 'MySQL Connector/C++, the C++ interface for communicating with MySQL servers.'
+  summary: MySQL Connector/C++, the C++ interface for communicating with MySQL servers.
   description: |
     MySQL Connector/C++ 8.0 is a MySQL database connector for C++ applications
     that connect to MySQL servers.
