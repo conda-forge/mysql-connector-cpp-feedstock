@@ -1,6 +1,6 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
-{% set version = "8.0.20" %}
+{% set version = "8.0.21" %}
 {% set build_number = 0 %}
 
 package:
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz
-  sha256: 50eaebd1d59b5681b6959a8c5b95bdeeffd021db0f06264eb497706dbc5b39cb
+  sha256: 70e11c81ee6f482f4d2954a0aa5c43ab35bb6b2a0f0cadcd37e246950201e423
   patches:
     - 0001-Override-custom-install-layout.patch
     - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
