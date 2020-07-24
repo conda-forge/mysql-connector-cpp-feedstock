@@ -5,7 +5,7 @@ Home: https://dev.mysql.com/doc/connector-cpp/8.0/en/
 
 Package license: LGPL
 
-Feedstock license: BSD 3-Clause
+Feedstock license: BSD-3-Clause
 
 Summary: MySQL Connector/C++, the C++ interface for communicating with MySQL servers.
 
