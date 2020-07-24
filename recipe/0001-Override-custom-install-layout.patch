@@ -1,4 +1,4 @@
-From 8050ee3e9f8df400641e0cbe6a2b2ea2e68438bd Mon Sep 17 00:00:00 2001
+From c1bb3b75232416ba5e5b95dbbdd07a7dfba6410a Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sat, 18 Jan 2020 23:02:05 -0800
 Subject: [PATCH 1/2] Override custom install layout
@@ -8,7 +8,7 @@ Subject: [PATCH 1/2] Override custom install layout
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8bc5a106..183d84a5 100644
+index 2a27dacc..83d7a2f2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -476,9 +476,9 @@ set_target_properties(connector PROPERTIES
@@ -25,5 +25,5 @@ index 8bc5a106..183d84a5 100644
  
  install(TARGETS connector
 -- 
-2.24.1
+2.26.2
 
