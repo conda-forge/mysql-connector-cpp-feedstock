@@ -11,6 +11,7 @@ for %%O in (ON OFF) DO (
      -Bbuild.%%O ^
      -GNinja ^
      -DBUILD_STATIC=%%O ^
+     -DWITH_JDBC:BOOL=ON ^
      -DCMAKE_BUILD_TYPE=Release ^
      -DCMAKE_INSTALL_LIBDIR=lib ^
      -DWITH_SSL=%LIBRARY_PREFIX% ^

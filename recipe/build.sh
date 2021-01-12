@@ -9,6 +9,7 @@ fi
 
 cmake_options=(
   -DWITH_SSL=$PREFIX \
+  -DWITH_JDBC:BOOL=ON \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_PREFIX_PATH=$PREFIX \
