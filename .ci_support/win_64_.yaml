@@ -1,5 +1,7 @@
 CMAKE_GENERATOR:
 - NMake Makefiles
+boost:
+- 1.74.0
 c_compiler:
 - vs2017
 channel_sources:
@@ -11,9 +13,17 @@ cxx_compiler:
 openssl:
 - 1.1.1
 pin_run_as_build:
+  boost:
+    max_pin: x.x.x
   openssl:
     max_pin: x.x.x
+  zlib:
+    max_pin: x.x
 target_platform:
 - win-64
 vc:
 - '14'
+zlib:
+- '1.2'
+zstd:
+- '1.4'

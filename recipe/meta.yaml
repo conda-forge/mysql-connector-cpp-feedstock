@@ -1,7 +1,7 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
 {% set version = "8.0.22" %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 
 package:
   name: {{ name|lower }}
@@ -19,6 +19,9 @@ build:
   number: {{ build_number }}
   missing_dso_whitelist:
     - /usr/lib/libresolv.9.dylib  # [osx]
+  ignore_run_exports:
+    # Only headers are required, license is same
+    - mysql-libs
 
 requirements:
   build:
@@ -29,6 +32,11 @@ requirements:
     - {{ compiler('c') }}
   host:
     - openssl
+    # The following are required only if JDBC support is enabled
+    - boost
+    - mysql-devel {{ version }}
+    - zlib
+    - zstd  # [win]
 
 test:
   files:
