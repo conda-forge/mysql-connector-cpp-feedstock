@@ -1,6 +1,6 @@
 CMAKE_GENERATOR:
 - NMake Makefiles
-boost:
+boost_cpp:
 - 1.74.0
 c_compiler:
 - vs2017
@@ -13,7 +13,7 @@ cxx_compiler:
 openssl:
 - 1.1.1
 pin_run_as_build:
-  boost:
+  boost-cpp:
     max_pin: x.x.x
   openssl:
     max_pin: x.x.x
