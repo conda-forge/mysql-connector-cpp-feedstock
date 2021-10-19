@@ -1,11 +1,11 @@
 CMAKE_GENERATOR:
 - NMake Makefiles
-boost:
+boost_cpp:
 - 1.74.0
 c_compiler:
 - vs2017
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -13,9 +13,7 @@ cxx_compiler:
 openssl:
 - 1.1.1
 pin_run_as_build:
-  boost:
-    max_pin: x.x.x
-  openssl:
+  boost-cpp:
     max_pin: x.x.x
   zlib:
     max_pin: x.x
