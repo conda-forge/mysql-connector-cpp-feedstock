@@ -11,8 +11,8 @@ source:
   url: https://dev.mysql.com/get/Downloads/Connector-C++/{{ url_name|lower }}-{{ version }}-src.tar.gz
   sha256: 5886698fc682a5e8740822ed9b461bc51b60cf9cbadf4e1c7febe59584b2bfb7
   patches:
-    - 0001-Override-custom-install-layout.patch
-    - 0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
+    - patches/0001-Override-custom-install-layout.patch
+    - patches/0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
 
 build:
   skip: true  # [win and vc<14]
@@ -33,7 +33,7 @@ requirements:
   host:
     - openssl
     # The following are required only if JDBC support is enabled
-    - boost
+    - boost-cpp
     - mysql-devel {{ version }}
     - zlib
     - zstd  # [win]
