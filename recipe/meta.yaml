@@ -43,6 +43,7 @@ test:
     - cmake_test             # [unix]
   requires:
     - cmake                  # [unix]
+    - make                   # [unix]
     - {{ compiler('cxx') }}  # [unix]
     - {{ compiler('c') }}    # [unix]
   commands:
