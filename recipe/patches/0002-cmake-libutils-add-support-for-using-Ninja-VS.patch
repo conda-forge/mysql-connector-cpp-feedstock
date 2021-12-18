@@ -1,15 +1,15 @@
-From 42a039d0c106cf27ff3c1771dd5811c53da88f3e Mon Sep 17 00:00:00 2001
+From 19f7e2c9b8ac582f747b624ac1f791b3b9bfbb49 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Fri, 24 Jul 2020 00:36:08 -0400
 Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
 
 ---
- cmake/libutils.cmake                   | 27 ++++++++++++++++++++++++--
- cmake/libutils/merge_archives.cmake.in |  8 ++++----
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ cmake/libutils.cmake                   | 29 +++++++++++++++++++++++---
+ cmake/libutils/merge_archives.cmake.in |  8 +++----
+ 2 files changed, 30 insertions(+), 7 deletions(-)
 
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 05ea32e9..580e4fb3 100644
+index 05ea32e9..4fd45ce9 100644
 --- a/cmake/libutils.cmake
 +++ b/cmake/libutils.cmake
 @@ -64,6 +64,17 @@ macro(libutils_setup)
@@ -30,6 +30,15 @@ index 05ea32e9..580e4fb3 100644
    if(APPLE)
  
      find_program(LIB_TOOL libtool)
+@@ -116,7 +127,7 @@ macro(libutils_setup)
+   # were passed to it. It is used to capture linker invocation options.
+   #
+ 
+-  if(NOT MSBUILD AND NOT TARGET save_linker_opts)
++  if(NOT (MSBUILD OR NINJA_WITH_VS) AND NOT TARGET save_linker_opts)
+     add_executable(save_linker_opts ${LIBUTILS_SCRIPT_DIR}/save_linker_opts.cc)
+     set_property(TARGET save_linker_opts PROPERTY
+       RUNTIME_OUTPUT_DIRECTORY ${LIBUTILS_BIN_DIR}
 @@ -180,7 +191,7 @@ function(merge_libraries TARGET)
    # by merge_archives script is appended to that file.
    #
