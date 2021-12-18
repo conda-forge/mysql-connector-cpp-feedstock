@@ -1,4 +1,4 @@
-From 029c83d50d7755df021e6cf3d5dc5908def4c963 Mon Sep 17 00:00:00 2001
+From 42a039d0c106cf27ff3c1771dd5811c53da88f3e Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Fri, 24 Jul 2020 00:36:08 -0400
 Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
@@ -9,7 +9,7 @@ Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
  2 files changed, 29 insertions(+), 6 deletions(-)
 
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 05ea32e9..b900fba3 100644
+index 05ea32e9..580e4fb3 100644
 --- a/cmake/libutils.cmake
 +++ b/cmake/libutils.cmake
 @@ -64,6 +64,17 @@ macro(libutils_setup)
@@ -68,7 +68,7 @@ index 05ea32e9..b900fba3 100644
      endif()
  
 -    if(NOT MSBUILD)
-+    if(NOT MSBUILD OR NOT NINJA_WITH_VS)
++    if(NOT (MSBUILD OR NINJA_WITH_VS))
        message(FATAL_ERROR
          "Sorry but building static connector on Windows using MSVC toolset"
          " works only with msbuild at the moment."
