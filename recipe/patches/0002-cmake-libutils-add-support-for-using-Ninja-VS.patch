@@ -1,15 +1,15 @@
-From c97121c12d2595255fe2719fcd6b024ff72a827f Mon Sep 17 00:00:00 2001
+From 555aa4c9a30b9cbd2b6eae8619a8fa5e03c2cf80 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Fri, 24 Jul 2020 00:36:08 -0400
 Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
 
 ---
- cmake/libutils.cmake                   | 25 ++++++++++++++++++++++++-
+ cmake/libutils.cmake                   | 27 ++++++++++++++++++++++++--
  cmake/libutils/merge_archives.cmake.in |  2 +-
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ 2 files changed, 26 insertions(+), 3 deletions(-)
 
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 05ea32e9..c46c40ef 100644
+index 05ea32e9..0f12ac8f 100644
 --- a/cmake/libutils.cmake
 +++ b/cmake/libutils.cmake
 @@ -64,6 +64,17 @@ macro(libutils_setup)
@@ -63,6 +63,15 @@ index 05ea32e9..c46c40ef 100644
    #
    # The general way of detecting all dependencies is by building a helper
    # target ${TARGET}-deps which depends on the libraries that are to be merged.
+@@ -284,7 +307,7 @@ function(merge_libraries TARGET)
+ 
+     endif()
+ 
+-    if(NOT MSBUILD)
++    if(NOT MSVC)
+       message(FATAL_ERROR
+         "Sorry but building static connector on Windows using MSVC toolset"
+         " works only with msbuild at the moment."
 diff --git a/cmake/libutils/merge_archives.cmake.in b/cmake/libutils/merge_archives.cmake.in
 index 1b25f03c..3e387a63 100644
 --- a/cmake/libutils/merge_archives.cmake.in
@@ -77,5 +86,5 @@ index 1b25f03c..3e387a63 100644
      merge_libraries_win()
    elseif(APPLE)
 -- 
-2.31.1
+2.33.0
 
