@@ -1,0 +1,139 @@
+From 4a401b977cf470c11731306c2fd257f99a54a33b Mon Sep 17 00:00:00 2001
+From: Nehal J Wani <nehaljw.kkd1@gmail.com>
+Date: Fri, 24 Jul 2020 00:36:08 -0400
+Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
+
+---
+ cmake/libutils.cmake                   | 30 ++++++++++++++++++++++----
+ cmake/libutils/merge_archives.cmake.in |  6 +++---
+ cmake/libutils/save_linker_opts.cc     |  9 +++++++-
+ 3 files changed, 37 insertions(+), 8 deletions(-)
+
+diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
+index 05ea32e9..982a76fd 100644
+--- a/cmake/libutils.cmake
++++ b/cmake/libutils.cmake
+@@ -64,6 +64,17 @@ macro(libutils_setup)
+   endif()
+ 
+ 
++  if(WIN32 AND CMAKE_MAKE_PROGRAM MATCHES "ninja")
++    if(${CMAKE_CXX_COMPILER} MATCHES "cl.exe")
++      set(NINJA_WITH_VS ON)
++      # At this point, probably safe to assume Visual Studio Compiler is being used
++      # Use lib.exe from the same location as other compiler tools
++      get_filename_component(path "${CMAKE_LINKER}" DIRECTORY)
++      set(LIB_TOOL "${path}/lib.exe")
++    endif()
++  endif()
++
++
+   if(APPLE)
+ 
+     find_program(LIB_TOOL libtool)
+@@ -180,7 +191,7 @@ function(merge_libraries TARGET)
+   # by merge_archives script is appended to that file.
+   #
+ 
+-  if(NOT MSVC OR NOT TYPE STREQUAL "SHARED")
++  if(NOT (MSVC OR NINJA_WITH_VS) OR NOT TYPE STREQUAL "SHARED")
+ 
+     set(log_name "${TARGET}.log")
+     set(log_file
+@@ -197,11 +208,23 @@ function(merge_libraries TARGET)
+       -DMSVC=${MSVC}
+       -DINFO=${INFO}
+       -DINFO_PREFIX=${INFO_PREFIX}
++      -DNINJA_WITH_VS=${NINJA_WITH_VS}
+       -P ${LIBUTILS_BIN_DIR}/merge_archives.cmake
+     )
+ 
+   endif()
+ 
++  if(NINJA_WITH_VS AND TYPE STREQUAL "SHARED")
++      set(link_flags)
++      foreach(lib ${ARGN})
++        list(APPEND link_flags "/wholearchive:${lib}")
++      endforeach()
++      string(REPLACE ";" " " link_flags "${link_flags}")
++      set_property(TARGET ${TARGET} APPEND PROPERTY LINK_FLAGS ${link_flags})
++      return()
++  endif()
++
++
+   #
+   # The general way of detecting all dependencies is by building a helper
+   # target ${TARGET}-deps which depends on the libraries that are to be merged.
+@@ -213,8 +236,7 @@ function(merge_libraries TARGET)
+   # differs for different build tools.
+   #
+ 
+-  if(NOT MSVC)
+-
++  if(NOT MSVC OR NINJA_WITH_VS)
+     # TODO: Will it work with XCode?
+ 
+     add_library(${TARGET}-deps SHARED EXCLUDE_FROM_ALL "${LIBUTILS_SCRIPT_DIR}/empty.cc")
+@@ -284,7 +306,7 @@ function(merge_libraries TARGET)
+ 
+     endif()
+ 
+-    if(NOT MSBUILD)
++    if(NOT (MSBUILD OR NINJA_WITH_VS))
+       message(FATAL_ERROR
+         "Sorry but building static connector on Windows using MSVC toolset"
+         " works only with msbuild at the moment."
+diff --git a/cmake/libutils/merge_archives.cmake.in b/cmake/libutils/merge_archives.cmake.in
+index 1b25f03c..be0afe14 100644
+--- a/cmake/libutils/merge_archives.cmake.in
++++ b/cmake/libutils/merge_archives.cmake.in
+@@ -70,7 +70,7 @@ endif()
+ 
+ # Nothing nees to be done if merging into DLL on Windows
+ 
+-if(MSBUILD AND TYPE STREQUAL "SHARED")
++if((MSBUILD OR NINJA_WITH_VS) AND TYPE STREQUAL "SHARED")
+   return()
+ endif()
+ 
+@@ -159,7 +159,7 @@ function(main)
+   # nmake on Windows.
+   #
+ 
+-  if(MSBUILD)
++  if(MSBUILD OR NINJA_WITH_VS)
+     process_deps_msbuild()
+   else()
+     process_deps_gcc()
+@@ -184,7 +184,7 @@ function(main)
+   endforeach()
+   message("Merge options: ${LINK_OPTIONS}")
+ 
+-  if(MSVC)
++  if(MSVC OR NINJA_WITH_VS)
+     message("- using MSVC tools")
+     merge_libraries_win()
+   elseif(APPLE)
+diff --git a/cmake/libutils/save_linker_opts.cc b/cmake/libutils/save_linker_opts.cc
+index 68cc40c8..bbeda11a 100644
+--- a/cmake/libutils/save_linker_opts.cc
++++ b/cmake/libutils/save_linker_opts.cc
+@@ -30,7 +30,14 @@
+ 
+ #include <iostream>
+ #include <fstream>
+-#include <unistd.h>
++
++#ifdef _WIN32
++    #include <direct.h>
++    #define getcwd _getcwd // suppress "deprecation" warning
++#else
++    #include <unistd.h>
++#endif
++
+ 
+ using namespace std;
+ 
+-- 
+2.33.0
+

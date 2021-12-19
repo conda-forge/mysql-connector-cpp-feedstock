@@ -1,11 +1,3 @@
-REM The 'official' supported way of building this software is with MSBuild as
-REM the CMAKE_MAKE_PROGRAM; but the azure image for vs2017-win2016 is screwed
-REM up (missing registry keys for VS2015), so we end up using Ninja instead. 
-
-REM Ideally, cdk\protobuf should have been built automatically, but the
-REM dependency on the thir party library is not specified correctly for the
-REM Ninja generator. Hence we end up using two build commands.
-
 for %%O in (ON OFF) DO ( 
    cmake -S. ^
      -Bbuild.%%O ^
@@ -23,10 +15,8 @@ for %%O in (ON OFF) DO (
      -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
      -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
      -DMYSQL_EXTERNAL_DEPENDENCIES="zlib.lib;zstd.lib"
-     REM -G"%CMAKE_GENERATOR%" ^
    if ERRORLEVEL 1 EXIT 1
 
-   cmake --build build.%%O/cdk/protobuf
    cmake --build build.%%O --target install
    REM cmake --build build.%%O --target install
    REM cmake --build build.%%O --config Release --target install
