@@ -13,6 +13,7 @@ source:
   patches:
     - patches/0001-Override-custom-install-layout.patch
     - patches/0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
+    - patches/0003-Define-helper-vars-for-cross-compilation.patch
 
 build:
   skip: true  # [win and vc<14]

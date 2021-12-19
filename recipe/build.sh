@@ -19,14 +19,28 @@ cmake_options=(
   -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
 )
 
+if [[ $target_platform == osx-arm64 ]] && [[ $CONDA_BUILD_CROSS_COMPILATION == 1 ]]; then
+    # Build all intermediate codegen binaries for the build platform
+    # xref: https://cmake.org/pipermail/cmake/2013-January/053252.html
+    env -u CC -u CXX -u SDKROOT -u CONDA_BUILD_SYSROOT -u CMAKE_PREFIX_PATH \
+        -u CXXFLAGS -u CPPFLAGS -u CFLAGS -u LDFLAGS -u MACOSX_DEPLOYMENT_TARGET \
+        cmake -S. -Bbuild.codegen "${cmake_options[@]}" \
+          -DCMAKE_C_COMPILER=$CC_FOR_BUILD \
+          -DCMAKE_CXX_COMPILER=$CXX_FOR_BUILD
+    cmake --build build.codegen/cdk/protocol/mysqlx/protobuf -- protoc -j${CPU_COUNT} VERBOSE=1
+    cmake --build build.codegen -- save_linker_opts -j${CPU_COUNT} VERBOSE=1
+    cmake_options+=(-DProtoc_CMD=$SRC_DIR/build.codegen/cdk/protocol/mysqlx/protobuf/runtime_output_directory/protoc)
+    cmake_options+=(-DSave_Linker_Opts_CMD=$SRC_DIR/build.codegen/libutils/save_linker_opts)
+fi
+
 for choice in ON OFF
 do
   cmake -S. \
     -Bbuild.$choice \
     -DBUILD_STATIC=$choice \
     "${cmake_options[@]}"
-  cmake --build build.$choice -- -j${CPU_COUNT} ${VERBOSE_AT}
-  cmake --build build.$choice -- install
+  cmake --build build.$choice -- -j${CPU_COUNT} VERBOSE=1
+  cmake --build build.$choice -- install VERBOSE=1
 done
 
 mv ${PREFIX}/INFO_SRC ${PREFIX}/${PKG_NAME}_INFO_SRC

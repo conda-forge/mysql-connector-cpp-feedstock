@@ -1,0 +1,63 @@
+From fa5e6532d71153e10ad0f67c9a24b845887b40e4 Mon Sep 17 00:00:00 2001
+From: Nehal J Wani <nehaljw.kkd1@gmail.com>
+Date: Sun, 19 Dec 2021 12:49:11 -0500
+Subject: [PATCH 3/3] Define helper vars for cross compilation
+
+---
+ cdk/cmake/DepFindProtobuf.cmake | 6 +++++-
+ cmake/libutils.cmake            | 8 ++++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/cdk/cmake/DepFindProtobuf.cmake b/cdk/cmake/DepFindProtobuf.cmake
+index 414716c3..3e4a6a2a 100644
+--- a/cdk/cmake/DepFindProtobuf.cmake
++++ b/cdk/cmake/DepFindProtobuf.cmake
+@@ -90,12 +90,16 @@ function(mysqlx_protobuf_generate_cpp SRCS HDRS)
+     LIST(APPEND srcs "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.cc")
+     LIST(APPEND hdrs "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.h")
+ 
++    IF(NOT DEFINED Protoc_CMD)
++      SET(Protoc_CMD ext::protoc)
++    ENDIF()
++
+     ADD_CUSTOM_COMMAND(
+       OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.cc"
+              "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.h"
+       COMMAND ${CMAKE_COMMAND}
+             -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/protobuf"
+-      COMMAND ext::protoc
++      COMMAND "${Protoc_CMD}"
+       ARGS --cpp_out "${CMAKE_CURRENT_BINARY_DIR}/protobuf"
+            -I ${ABS_PATH} ${ABS_FIL}
+            #--proto_path=${PROTOBUF_INCLUDE_DIR}
+diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
+index 982a76fd..31cd25a4 100644
+--- a/cmake/libutils.cmake
++++ b/cmake/libutils.cmake
+@@ -250,9 +250,13 @@ function(merge_libraries TARGET)
+     # (name of the file is passed as the first parameter).
+     #
+ 
++    if(NOT DEFINED Save_Linker_Opts_CMD)
++      set(Save_Linker_Opts_CMD "${LIBUTILS_BIN_DIR}/save_linker_opts")
++    endif()
++
+     add_dependencies(${TARGET}-deps save_linker_opts)
+     set_target_properties(${TARGET}-deps PROPERTIES
+-      RULE_LAUNCH_LINK "${LIBUTILS_BIN_DIR}/save_linker_opts ${log_file}.STATIC "
++      RULE_LAUNCH_LINK "${Save_Linker_Opts_CMD} ${log_file}.STATIC "
+     )
+ 
+     # Arrange for ${TARGET}-deps to be built before ${TARGET}
+@@ -270,7 +274,7 @@ function(merge_libraries TARGET)
+     #
+ 
+     set_target_properties(${TARGET} PROPERTIES
+-      RULE_LAUNCH_LINK "${LIBUTILS_BIN_DIR}/save_linker_opts ${log_file}.SHARED "
++      RULE_LAUNCH_LINK "${Save_Linker_Opts_CMD} ${log_file}.SHARED "
+     )
+ 
+   else(NOT MSVC)
+-- 
+2.33.1
+
