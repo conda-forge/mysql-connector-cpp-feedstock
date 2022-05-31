@@ -1,7 +1,7 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
 {% set version = "8.0.29" %}
-{% set build_number = 0 %}
+{% set build_number = 1 %}
 
 package:
   name: {{ name|lower }}
@@ -14,6 +14,7 @@ source:
     - patches/0001-Override-custom-install-layout.patch
     - patches/0002-cmake-libutils-add-support-for-using-Ninja-VS.patch
     - patches/0003-Define-helper-vars-for-cross-compilation.patch
+    - patches/0004-Relax-constraint-on-OpenSSL-version.patch
 
 build:
   skip: true  # [win and vc<14]
