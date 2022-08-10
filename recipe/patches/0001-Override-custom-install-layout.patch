@@ -1,7 +1,7 @@
-From fabb95abdd7d90d5022b79e96ce60aabba608543 Mon Sep 17 00:00:00 2001
+From 7eb39458205813f438cbd88f43c3c9677c95a4e9 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sat, 18 Jan 2020 23:02:05 -0800
-Subject: [PATCH 1/2] Override custom install layout
+Subject: [PATCH 1/3] Override custom install layout
 
 ---
  CMakeLists.txt | 6 +++---
@@ -25,5 +25,5 @@ index e7347146..849fcde5 100644
  
  install(TARGETS connector
 -- 
-2.33.0
+2.33.1
 

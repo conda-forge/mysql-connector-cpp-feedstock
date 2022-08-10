@@ -1,4 +1,4 @@
-From fa5e6532d71153e10ad0f67c9a24b845887b40e4 Mon Sep 17 00:00:00 2001
+From 1921432a49d813f205368b6d172b9e8e5e4aae30 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sun, 19 Dec 2021 12:49:11 -0500
 Subject: [PATCH 3/3] Define helper vars for cross compilation

@@ -1,7 +1,7 @@
-From 4a401b977cf470c11731306c2fd257f99a54a33b Mon Sep 17 00:00:00 2001
+From 357f609dad8149f77905a0be8a384e14c37734ac Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Fri, 24 Jul 2020 00:36:08 -0400
-Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
+Subject: [PATCH 2/3] cmake/libutils: add support for using Ninja + VS
 
 ---
  cmake/libutils.cmake                   | 30 ++++++++++++++++++++++----
@@ -135,5 +135,5 @@ index 68cc40c8..bbeda11a 100644
  using namespace std;
  
 -- 
-2.33.0
+2.33.1
 
