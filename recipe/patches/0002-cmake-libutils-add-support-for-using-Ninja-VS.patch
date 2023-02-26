@@ -1,13 +1,12 @@
-From 4a401b977cf470c11731306c2fd257f99a54a33b Mon Sep 17 00:00:00 2001
+From 15ca6dbda3c1ceb8d88b1e5bba864e464910fbb5 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Fri, 24 Jul 2020 00:36:08 -0400
-Subject: [PATCH 2/2] cmake/libutils: add support for using Ninja + VS
+Subject: [PATCH 2/3] cmake/libutils: add support for using Ninja + VS
 
 ---
  cmake/libutils.cmake                   | 30 ++++++++++++++++++++++----
  cmake/libutils/merge_archives.cmake.in |  6 +++---
- cmake/libutils/save_linker_opts.cc     |  9 +++++++-
- 3 files changed, 37 insertions(+), 8 deletions(-)
+ 2 files changed, 29 insertions(+), 7 deletions(-)
 
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
 index 05ea32e9..982a76fd 100644
@@ -114,26 +113,6 @@ index 1b25f03c..be0afe14 100644
      message("- using MSVC tools")
      merge_libraries_win()
    elseif(APPLE)
-diff --git a/cmake/libutils/save_linker_opts.cc b/cmake/libutils/save_linker_opts.cc
-index 68cc40c8..bbeda11a 100644
---- a/cmake/libutils/save_linker_opts.cc
-+++ b/cmake/libutils/save_linker_opts.cc
-@@ -30,7 +30,14 @@
- 
- #include <iostream>
- #include <fstream>
--#include <unistd.h>
-+
-+#ifdef _WIN32
-+    #include <direct.h>
-+    #define getcwd _getcwd // suppress "deprecation" warning
-+#else
-+    #include <unistd.h>
-+#endif
-+
- 
- using namespace std;
- 
 -- 
-2.33.0
+2.33.1
 

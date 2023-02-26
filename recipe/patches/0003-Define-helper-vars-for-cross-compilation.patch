@@ -1,4 +1,4 @@
-From fa5e6532d71153e10ad0f67c9a24b845887b40e4 Mon Sep 17 00:00:00 2001
+From 5df61a6cfd15a874bcfa6a1177eabae9d8049445 Mon Sep 17 00:00:00 2001
 From: Nehal J Wani <nehaljw.kkd1@gmail.com>
 Date: Sun, 19 Dec 2021 12:49:11 -0500
 Subject: [PATCH 3/3] Define helper vars for cross compilation
@@ -9,27 +9,29 @@ Subject: [PATCH 3/3] Define helper vars for cross compilation
  2 files changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/cdk/cmake/DepFindProtobuf.cmake b/cdk/cmake/DepFindProtobuf.cmake
-index 414716c3..3e4a6a2a 100644
+index 730389de..69bc7ea5 100644
 --- a/cdk/cmake/DepFindProtobuf.cmake
 +++ b/cdk/cmake/DepFindProtobuf.cmake
-@@ -90,12 +90,16 @@ function(mysqlx_protobuf_generate_cpp SRCS HDRS)
-     LIST(APPEND srcs "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.cc")
-     LIST(APPEND hdrs "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.h")
+@@ -77,6 +77,10 @@ function(mysqlx_protobuf_generate_cpp SRCS HDRS)
+   SET(srcs)
+   SET(hdrs)
  
-+    IF(NOT DEFINED Protoc_CMD)
-+      SET(Protoc_CMD ext::protoc)
-+    ENDIF()
++  IF(NOT DEFINED Protoc_CMD)
++    SET(Protoc_CMD ext::protoc)
++  ENDIF()
 +
-     ADD_CUSTOM_COMMAND(
-       OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.cc"
-              "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.h"
+   FOREACH(FIL ${ARGN})
+     GET_FILENAME_COMPONENT(ABS_FIL ${FIL} ABSOLUTE)
+     GET_FILENAME_COMPONENT(FIL_WE ${FIL} NAME_WE)
+@@ -90,7 +94,7 @@ function(mysqlx_protobuf_generate_cpp SRCS HDRS)
+       "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${FIL_WE}.pb.h"
        COMMAND ${CMAKE_COMMAND}
-             -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/protobuf"
+       -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/protobuf"
 -      COMMAND ext::protoc
 +      COMMAND "${Protoc_CMD}"
        ARGS --cpp_out "${CMAKE_CURRENT_BINARY_DIR}/protobuf"
-            -I ${ABS_PATH} ${ABS_FIL}
-            #--proto_path=${PROTOBUF_INCLUDE_DIR}
+       -I ${ABS_PATH} ${ABS_FIL}
+ 
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
 index 982a76fd..31cd25a4 100644
 --- a/cmake/libutils.cmake
