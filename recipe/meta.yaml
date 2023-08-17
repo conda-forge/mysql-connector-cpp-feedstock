@@ -17,7 +17,7 @@ source:
     - patches/0004-Relax-constraint-on-OpenSSL-version.patch
 
 build:
-  skip: true  # [win and vc<14]
+  skip: true  # [win, vc<14 and ppc64le]
   number: {{ build_number }}
   missing_dso_whitelist:
     - /usr/lib/libresolv.9.dylib  # [osx]
