@@ -1,7 +1,7 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
 {% set version = "8.0.29" %}
-{% set build_number = 2 %}
+{% set build_number = 3 %}
 
 package:
   name: {{ name|lower }}
@@ -35,7 +35,7 @@ requirements:
   host:
     - openssl
     # The following are required only if JDBC support is enabled
-    - boost-cpp
+    - libboost-headers
     - mysql-devel {{ version }}
     - zlib
     - zstd
