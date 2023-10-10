@@ -8,6 +8,9 @@ cxx_compiler:
 - vs2019
 openssl:
 - '3'
+pin_run_as_build:
+  boost-cpp:
+    max_pin: x.x.x
 target_platform:
 - win-64
 vc:
