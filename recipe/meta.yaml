@@ -1,7 +1,7 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
 {% set version = "8.0.29" %}
-{% set build_number = 3 %}
+{% set build_number = 4 %}
 
 package:
   name: {{ name|lower }}
