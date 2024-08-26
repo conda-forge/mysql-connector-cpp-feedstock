@@ -1,7 +1,7 @@
 {% set name = "mysql-connector-cpp" %}
 {% set url_name = "mysql-connector-c++" %}
 {% set version = "8.0.29" %}
-{% set build_number = 4 %}
+{% set build_number = 5 %}
 
 package:
   name: {{ name|lower }}
@@ -32,6 +32,7 @@ requirements:
     - ninja  # [win]
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
   host:
     - openssl
     # The following are required only if JDBC support is enabled
