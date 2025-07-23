@@ -9,7 +9,7 @@ channel_targets:
 cxx_compiler:
 - vs2019
 libboost_headers:
-- '1.86'
+- '1.88'
 openssl:
 - '3'
 target_platform:
